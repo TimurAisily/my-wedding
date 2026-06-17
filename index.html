@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -10,13 +11,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;600;700&family=Prata&display=swap" rel="stylesheet" />
     <style>
-        /* ===== БАЗОВЫЕ СТИЛИ ===== */
+        /* все ваши стили (без изменений) */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Prata', serif;
             background: #fffcf9;
@@ -25,7 +25,6 @@
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
-
         .section {
             position: relative;
             width: 100%;
@@ -36,8 +35,6 @@
             overflow: hidden;
             padding: 3rem 1.5rem;
         }
-
-        /* ===== АНИМАЦИИ ПОЯВЛЕНИЯ ===== */
         .anim-item {
             opacity: 0;
             transition: opacity 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94),
@@ -62,15 +59,10 @@
         .zoom-in {
             transform: scale(0.92);
         }
-
-        h1,
-        h2,
-        h3 {
+        h1, h2, h3 {
             font-family: 'Prata', serif;
             font-weight: 400;
         }
-
-        /* ===== ГЛАВНЫЙ ЭКРАН ===== */
         .hero {
             min-height: 100vh;
             background: linear-gradient(165deg, #fcf8f4 0%, #f4efe8 100%);
@@ -79,7 +71,6 @@
             padding: 3rem 1.5rem;
             justify-content: center;
         }
-
         .hero-decor {
             position: absolute;
             width: 100%;
@@ -99,7 +90,6 @@
             left: 10%;
             width: 80%;
         }
-
         .hero-leaf {
             position: absolute;
             pointer-events: none;
@@ -118,12 +108,10 @@
             width: 280px;
             transform: rotate(300deg);
         }
-
         .hero-content {
             position: relative;
             z-index: 2;
         }
-
         .hero h1 {
             font-size: clamp(2.8rem, 14vw, 5rem);
             color: #5a6053;
@@ -149,8 +137,6 @@
             border-radius: 60px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
         }
-
-        /* ===== ПРИГЛАШЕНИЕ ===== */
         .invite {
             background: #fcf8f4;
             text-align: center;
@@ -183,8 +169,6 @@
             width: 260px;
             transform: rotate(297deg);
         }
-
-        /* ===== ТАЙМЕР ===== */
         .timer-section {
             background: #f4efe8;
             text-align: center;
@@ -225,8 +209,6 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
-
-        /* ===== МЕСТО ===== */
         .place {
             background: #fcf8f4;
             text-align: center;
@@ -256,8 +238,6 @@
         .map-btn:active {
             transform: scale(0.95);
         }
-
-        /* ===== РАСПИСАНИЕ ===== */
         .schedule-section {
             background: #f4efe8;
             padding: 3.5rem 1.5rem;
@@ -283,8 +263,6 @@
             font-weight: 600;
             color: #7a8272;
         }
-
-        /* ===== ДРЕСС-КОД ===== */
         .dresscode {
             background: #fcf8f4;
             text-align: center;
@@ -309,8 +287,6 @@
             transform: scale(1.12);
             box-shadow: 0 8px 32px rgba(90, 96, 83, 0.18);
         }
-
-        /* ===== ФОРМА ===== */
         .rsvp {
             background: #fcf8f4;
             text-align: center;
@@ -365,7 +341,6 @@
             resize: vertical;
             min-height: 100px;
         }
-
         .form button {
             padding: 1rem 2.5rem;
             background: linear-gradient(145deg, #9ca58f, #7f8b73);
@@ -393,14 +368,11 @@
             transform: translateY(2px) scale(0.97);
             box-shadow: 0 4px 16px rgba(127, 139, 115, 0.2);
         }
-
         #formMsg {
             margin-top: 1rem;
             color: #7a8272;
             font-size: 1.05rem;
         }
-
-        /* ===== ФУТЕР ===== */
         footer {
             padding: 3rem 1.5rem;
             text-align: center;
@@ -409,7 +381,6 @@
             font-size: 1.15rem;
             letter-spacing: 1px;
         }
-
         .section-title {
             font-size: clamp(2rem, 7vw, 3.2rem);
             color: #5a6053;
@@ -418,194 +389,51 @@
             font-weight: 300;
             letter-spacing: 1px;
         }
-
-        /* ===== МОБИЛЬНЫЕ УЛУЧШЕНИЯ ===== */
         @media (max-width: 480px) {
-            .section {
-                padding: 2.5rem 1.2rem;
-            }
-            .hero {
-                padding: 2rem 1.2rem;
-                min-height: 92vh;
-            }
-            .hero h1 {
-                font-size: clamp(2.6rem, 16vw, 4rem);
-            }
-            .hero .subtitle {
-                letter-spacing: 3px;
-                font-size: 0.95rem;
-            }
-            .hero .date {
-                font-size: 1.2rem;
-                padding: 0.3rem 1.5rem;
-                backdrop-filter: blur(6px);
-            }
-            .hero-decor img {
-                max-width: 90%;
-                opacity: 0.15;
-            }
-            .hero-img2 {
-                top: 5%;
-                left: 5%;
-                width: 90%;
-            }
-            .hero-leaf-left {
-                left: -40px;
-                top: -10px;
-                width: 220px;
-                opacity: 0.15;
-            }
-            .hero-leaf-right {
-                right: -40px;
-                bottom: -10px;
-                width: 220px;
-                opacity: 0.15;
-            }
-
-            .invite {
-                padding: 3rem 1.2rem;
-            }
-            .invite-text {
-                font-size: 1rem;
-                line-height: 1.7;
-            }
-            .leaf-left {
-                left: -40px;
-                top: -30px;
-                width: 180px;
-                opacity: 0.15;
-            }
-            .leaf-right {
-                right: -40px;
-                bottom: -30px;
-                width: 180px;
-                opacity: 0.15;
-            }
-
-            .timer-section {
-                padding: 2.5rem 1.2rem;
-            }
-            .timer {
-                gap: 0.7rem;
-            }
-            .time-box {
-                min-width: 80px;
-                padding: 1rem 0.6rem;
-                border-radius: 22px;
-            }
-            .time-box span {
-                font-size: 2.2rem;
-            }
-            .time-label {
-                font-size: 0.7rem;
-            }
-
-            .place {
-                padding: 2.5rem 1.2rem;
-            }
-            .map-btn {
-                width: 120px;
-                height: 120px;
-                font-size: 1.1rem;
-                margin-top: 1.5rem;
-            }
-
-            .schedule-section {
-                padding: 2.5rem 1.2rem;
-            }
-            .schedule-item {
-                font-size: 0.95rem;
-                padding: 1rem 0;
-                flex-wrap: wrap;
-                gap: 0.3rem;
-            }
-            .schedule-item span:first-child {
-                font-weight: 600;
-                color: #5a6053;
-            }
-
-            .dresscode {
-                padding: 2.5rem 1.2rem;
-            }
-            .colors {
-                gap: 0.8rem;
-            }
-            .color {
-                width: 50px;
-                height: 50px;
-            }
-
-            .rsvp {
-                padding: 2.5rem 1.2rem;
-            }
-            .form input,
-            .form textarea,
-            .form select {
-                font-size: 0.95rem;
-                padding: 0.9rem 1.2rem;
-                border-radius: 14px;
-            }
-            .form button {
-                min-width: 160px;
-                font-size: 1rem;
-                padding: 0.9rem 1.8rem;
-            }
-
-            .section-title {
-                font-size: 1.9rem;
-                margin-bottom: 1.5rem;
-            }
-
-            footer {
-                font-size: 1rem;
-                padding: 2rem 1.2rem;
-            }
+            .section { padding: 2.5rem 1.2rem; }
+            .hero { padding: 2rem 1.2rem; min-height: 92vh; }
+            .hero h1 { font-size: clamp(2.6rem, 16vw, 4rem); }
+            .hero .subtitle { letter-spacing: 3px; font-size: 0.95rem; }
+            .hero .date { font-size: 1.2rem; padding: 0.3rem 1.5rem; backdrop-filter: blur(6px); }
+            .hero-decor img { max-width: 90%; opacity: 0.15; }
+            .hero-img2 { top: 5%; left: 5%; width: 90%; }
+            .hero-leaf-left { left: -40px; top: -10px; width: 220px; opacity: 0.15; }
+            .hero-leaf-right { right: -40px; bottom: -10px; width: 220px; opacity: 0.15; }
+            .invite { padding: 3rem 1.2rem; }
+            .invite-text { font-size: 1rem; line-height: 1.7; }
+            .leaf-left { left: -40px; top: -30px; width: 180px; opacity: 0.15; }
+            .leaf-right { right: -40px; bottom: -30px; width: 180px; opacity: 0.15; }
+            .timer-section { padding: 2.5rem 1.2rem; }
+            .timer { gap: 0.7rem; }
+            .time-box { min-width: 80px; padding: 1rem 0.6rem; border-radius: 22px; }
+            .time-box span { font-size: 2.2rem; }
+            .time-label { font-size: 0.7rem; }
+            .place { padding: 2.5rem 1.2rem; }
+            .map-btn { width: 120px; height: 120px; font-size: 1.1rem; margin-top: 1.5rem; }
+            .schedule-section { padding: 2.5rem 1.2rem; }
+            .schedule-item { font-size: 0.95rem; padding: 1rem 0; flex-wrap: wrap; gap: 0.3rem; }
+            .schedule-item span:first-child { font-weight: 600; color: #5a6053; }
+            .dresscode { padding: 2.5rem 1.2rem; }
+            .colors { gap: 0.8rem; }
+            .color { width: 50px; height: 50px; }
+            .rsvp { padding: 2.5rem 1.2rem; }
+            .form input, .form textarea, .form select { font-size: 0.95rem; padding: 0.9rem 1.2rem; border-radius: 14px; }
+            .form button { min-width: 160px; font-size: 1rem; padding: 0.9rem 1.8rem; }
+            .section-title { font-size: 1.9rem; margin-bottom: 1.5rem; }
+            footer { font-size: 1rem; padding: 2rem 1.2rem; }
         }
-
-        /* для очень маленьких экранов */
         @media (max-width: 360px) {
-            .hero h1 {
-                font-size: 2.4rem;
-            }
-            .time-box {
-                min-width: 70px;
-                padding: 0.8rem 0.4rem;
-            }
-            .time-box span {
-                font-size: 1.8rem;
-            }
-            .map-btn {
-                width: 100px;
-                height: 100px;
-                font-size: 0.95rem;
-            }
-            .form button {
-                min-width: 140px;
-                font-size: 0.9rem;
-            }
+            .hero h1 { font-size: 2.4rem; }
+            .time-box { min-width: 70px; padding: 0.8rem 0.4rem; }
+            .time-box span { font-size: 1.8rem; }
+            .map-btn { width: 100px; height: 100px; font-size: 0.95rem; }
+            .form button { min-width: 140px; font-size: 0.9rem; }
         }
-
-        /* планшеты */
         @media (min-width: 481px) and (max-width: 768px) {
-            .hero-leaf-left {
-                left: -80px;
-                top: -40px;
-                width: 350px;
-            }
-            .hero-leaf-right {
-                right: -80px;
-                bottom: -40px;
-                width: 350px;
-            }
-            .map-btn {
-                width: 140px;
-                height: 140px;
-                font-size: 1.3rem;
-            }
-            .time-box {
-                min-width: 110px;
-                padding: 1.4rem 1.2rem;
-            }
+            .hero-leaf-left { left: -80px; top: -40px; width: 350px; }
+            .hero-leaf-right { right: -80px; bottom: -40px; width: 350px; }
+            .map-btn { width: 140px; height: 140px; font-size: 1.3rem; }
+            .time-box { min-width: 110px; padding: 1.4rem 1.2rem; }
         }
     </style>
 </head>
@@ -687,14 +515,18 @@
     <!-- ===== ФОРМА ===== -->
     <section class="section rsvp">
         <h2 class="section-title anim-item zoom-in">Подтвердите присутствие</h2>
-        <form class="form anim-item fade-up" id="rsvpForm">
-            <input type="text" placeholder="Ваше имя" required />
-            <select required>
+        <form class="form anim-item fade-up" id="rsvpForm"
+              action="https://formsubmit.co/isl99@internet.ru"
+              method="POST">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_subject" value="Новый ответ на свадьбу!">
+            <input type="text" name="name" placeholder="Ваше имя" required />
+            <select name="attendance" required>
                 <option value="">Сможете присутствовать?</option>
-                <option>Да, обязательно</option>
-                <option>К сожалению, нет</option>
+                <option value="Да, обязательно">Да, обязательно</option>
+                <option value="К сожалению, нет">К сожалению, нет</option>
             </select>
-            <textarea rows="4" placeholder="Ваш комментарий"></textarea>
+            <textarea name="comment" rows="4" placeholder="Ваш комментарий"></textarea>
             <button type="submit">Отправить</button>
             <div id="formMsg"></div>
         </form>
@@ -706,7 +538,7 @@
     </footer>
 
     <script>
-        // ===== АНИМАЦИЯ ПРИ СКРОЛЛЕ =====
+        // Анимация
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -716,9 +548,8 @@
         }, { threshold: 0.15 });
         document.querySelectorAll('.anim-item').forEach(el => observer.observe(el));
 
-        // ===== ТАЙМЕР =====
+        // Таймер
         const weddingDate = new Date('August 15, 2026 15:00:00').getTime();
-
         function updateTimer() {
             const now = Date.now();
             const distance = weddingDate - now;
@@ -739,13 +570,27 @@
         setInterval(updateTimer, 1000);
         updateTimer();
 
-        // ===== ОТПРАВКА ФОРМЫ =====
-        document.getElementById('rsvpForm').addEventListener('submit', function(e) {
+        // Отправка формы (FormSubmit)
+        document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const formMsg = document.getElementById('formMsg');
-            formMsg.textContent = 'Спасибо! Ваш ответ получен.';
-            this.reset();
-            setTimeout(() => { formMsg.textContent = ''; }, 3500);
+            const formData = new FormData(this);
+
+            try {
+                const response = await fetch('https://formsubmit.co/ajax/isl99@internet.ru', {
+                    method: 'POST',
+                    body: formData
+                });
+                if (response.ok) {
+                    formMsg.textContent = '✅ Спасибо! Ваш ответ получен.';
+                    this.reset();
+                    setTimeout(() => { formMsg.textContent = ''; }, 4000);
+                } else {
+                    formMsg.textContent = '❌ Ошибка. Попробуйте ещё раз.';
+                }
+            } catch {
+                formMsg.textContent = '❌ Ошибка соединения. Проверьте интернет.';
+            }
         });
     </script>
 
