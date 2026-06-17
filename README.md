@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
+    <title>Тимур & Айсылу | Приглашение</title>
+    <meta name="description" content="Красивое пригласительное на никах в зеленых тонах" />
+    <meta name="theme-color" content="#f7f3ef" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;600;700&family=Prata&display=swap" rel="stylesheet" />
+    <style>
+        /* ===== БАЗОВЫЕ СТИЛИ ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Prata', serif;
+            background: #fffcf9;
+            color: #5a6053;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .section {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 3rem 1.5rem;
+        }
+
+        /* ===== АНИМАЦИИ ПОЯВЛЕНИЯ ===== */
+        .anim-item {
+            opacity: 0;
+            transition: opacity 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .anim-item.visible {
+            opacity: 1;
+            transform: translate(0, 0) scale(1) rotate(0deg);
+        }
+        .fade-up {
+            transform: translateY(40px);
+        }
+        .fade-down {
+            transform: translateY(-40px);
+        }
+        .fade-left {
+            transform: translateX(-40px);
+        }
+        .fade-right {
+            transform: translateX(40px);
+        }
+        .zoom-in {
+            transform: scale(0.92);
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Prata', serif;
+            font-weight: 400;
+        }
+
+        /* ===== ГЛАВНЫЙ ЭКРАН ===== */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(165deg, #fcf8f4 0%, #f4efe8 100%);
+            text-align: center;
+            position: relative;
+            padding: 3rem 1.5rem;
+            justify-content: center;
+        }
+
+        .hero-decor {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            opacity: 0.12;
+        }
+        .hero-decor img {
+            position: absolute;
+            max-width: 70%;
+            height: auto;
+        }
+        .hero-img2 {
+            top: 10%;
+            left: 10%;
+            width: 80%;
+        }
+
+        .hero-leaf {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.20;
+            z-index: 1;
+        }
+        .hero-leaf-left {
+            left: -60px;
+            top: -20px;
+            width: 280px;
+            transform: rotate(130deg);
+        }
+        .hero-leaf-right {
+            right: -60px;
+            bottom: -20px;
+            width: 280px;
+            transform: rotate(300deg);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.8rem, 14vw, 5rem);
+            color: #5a6053;
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 12px rgba(90, 96, 83, 0.08);
+        }
+        .hero .subtitle {
+            font-size: clamp(1rem, 4.5vw, 1.5rem);
+            letter-spacing: 5px;
+            margin-top: 0.5rem;
+            color: #7a8272;
+            font-weight: 300;
+        }
+        .hero .date {
+            font-size: clamp(1.4rem, 5.5vw, 2rem);
+            margin-top: 1.5rem;
+            color: #7a8272;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(4px);
+            display: inline-block;
+            padding: 0.4rem 2rem;
+            border-radius: 60px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        /* ===== ПРИГЛАШЕНИЕ ===== */
+        .invite {
+            background: #fcf8f4;
+            text-align: center;
+            position: relative;
+            padding: 4rem 1.5rem;
+        }
+        .invite-text {
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: clamp(1.1rem, 4.2vw, 1.4rem);
+            position: relative;
+            z-index: 2;
+            color: #5a6053;
+            line-height: 1.8;
+        }
+        .leaf-bg {
+            position: absolute;
+            opacity: 0.20;
+            pointer-events: none;
+        }
+        .leaf-left {
+            left: -70px;
+            top: -50px;
+            width: 260px;
+            transform: rotate(146deg);
+        }
+        .leaf-right {
+            right: -70px;
+            bottom: -50px;
+            width: 260px;
+            transform: rotate(297deg);
+        }
+
+        /* ===== ТАЙМЕР ===== */
+        .timer-section {
+            background: #f4efe8;
+            text-align: center;
+            padding: 3.5rem 1.5rem;
+        }
+        .timer {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        .time-box {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(6px);
+            padding: 1.4rem 1rem;
+            border-radius: 28px;
+            min-width: 100px;
+            box-shadow: 0 8px 32px rgba(90, 96, 83, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .time-box:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(90, 96, 83, 0.12);
+        }
+        .time-box span {
+            display: block;
+            font-size: 2.8rem;
+            font-weight: 600;
+            color: #5a6053;
+            letter-spacing: 2px;
+        }
+        .time-label {
+            font-size: 0.85rem;
+            margin-top: 0.3rem;
+            color: #8a9282;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ===== МЕСТО ===== */
+        .place {
+            background: #fcf8f4;
+            text-align: center;
+            padding: 3.5rem 1.5rem;
+        }
+        .map-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2rem;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #9ca58f, #7f8b73);
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.4rem;
+            font-family: 'Prata', serif;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+            box-shadow: 0 8px 30px rgba(127, 139, 115, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        .map-btn:hover {
+            transform: scale(1.06);
+            box-shadow: 0 12px 40px rgba(127, 139, 115, 0.4);
+        }
+        .map-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* ===== РАСПИСАНИЕ ===== */
+        .schedule-section {
+            background: #f4efe8;
+            padding: 3.5rem 1.5rem;
+        }
+        .schedule {
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        .schedule-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.3rem 0;
+            border-bottom: 1px solid rgba(90, 96, 83, 0.12);
+            font-size: 1.1rem;
+            color: #5a6053;
+        }
+        .schedule-item:last-child {
+            border-bottom: none;
+        }
+        .schedule-item span:first-child {
+            font-weight: 600;
+            color: #7a8272;
+        }
+
+        /* ===== ДРЕСС-КОД ===== */
+        .dresscode {
+            background: #fcf8f4;
+            text-align: center;
+            padding: 3.5rem 1.5rem;
+        }
+        .colors {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .color {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            box-shadow: 0 6px 24px rgba(90, 96, 83, 0.10);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .color:hover {
+            transform: scale(1.12);
+            box-shadow: 0 8px 32px rgba(90, 96, 83, 0.18);
+        }
+
+        /* ===== ФОРМА ===== */
+        .rsvp {
+            background: #fcf8f4;
+            text-align: center;
+            padding: 3.5rem 1.5rem;
+        }
+        .form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            width: 100%;
+        }
+        .form input,
+        .form textarea,
+        .form select {
+            width: 100%;
+            padding: 1rem 1.4rem;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(4px);
+            border: 1.5px solid rgba(90, 96, 83, 0.15);
+            color: #3a4035;
+            font-family: 'Prata', serif;
+            font-size: 1.05rem;
+            border-radius: 16px;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .form input:focus,
+        .form textarea:focus,
+        .form select:focus {
+            border-color: #9ca58f;
+            box-shadow: 0 0 0 4px rgba(156, 165, 143, 0.15);
+        }
+        .form input::placeholder,
+        .form textarea::placeholder {
+            color: rgba(90, 96, 83, 0.5);
+        }
+        .form select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%235a6053'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 1.2rem center;
+            background-size: 1.6rem;
+            color: #3a4035;
+        }
+        .form select option {
+            background: #fff;
+            color: #3a4035;
+        }
+        .form textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form button {
+            padding: 1rem 2.5rem;
+            background: linear-gradient(145deg, #9ca58f, #7f8b73);
+            color: #fff;
+            border: none;
+            font-family: 'Prata', serif;
+            font-weight: 400;
+            font-size: 1.2rem;
+            letter-spacing: 0.12em;
+            cursor: pointer;
+            border-radius: 60px;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            width: auto;
+            min-width: 200px;
+            margin: 0 auto;
+            box-shadow: 0 8px 28px rgba(127, 139, 115, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .form button:hover {
+            background: linear-gradient(145deg, #8c957f, #6b7a64);
+            box-shadow: 0 12px 36px rgba(127, 139, 115, 0.35);
+            transform: translateY(-3px);
+        }
+        .form button:active {
+            transform: translateY(2px) scale(0.97);
+            box-shadow: 0 4px 16px rgba(127, 139, 115, 0.2);
+        }
+
+        #formMsg {
+            margin-top: 1rem;
+            color: #7a8272;
+            font-size: 1.05rem;
+        }
+
+        /* ===== ФУТЕР ===== */
+        footer {
+            padding: 3rem 1.5rem;
+            text-align: center;
+            background: #f4efe8;
+            color: #7a8272;
+            font-size: 1.15rem;
+            letter-spacing: 1px;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 7vw, 3.2rem);
+            color: #5a6053;
+            margin-bottom: 2rem;
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* ===== МОБИЛЬНЫЕ УЛУЧШЕНИЯ ===== */
+        @media (max-width: 480px) {
+            .section {
+                padding: 2.5rem 1.2rem;
+            }
+            .hero {
+                padding: 2rem 1.2rem;
+                min-height: 92vh;
+            }
+            .hero h1 {
+                font-size: clamp(2.6rem, 16vw, 4rem);
+            }
+            .hero .subtitle {
+                letter-spacing: 3px;
+                font-size: 0.95rem;
+            }
+            .hero .date {
+                font-size: 1.2rem;
+                padding: 0.3rem 1.5rem;
+                backdrop-filter: blur(6px);
+            }
+            .hero-decor img {
+                max-width: 90%;
+                opacity: 0.15;
+            }
+            .hero-img2 {
+                top: 5%;
+                left: 5%;
+                width: 90%;
+            }
+            .hero-leaf-left {
+                left: -40px;
+                top: -10px;
+                width: 220px;
+                opacity: 0.15;
+            }
+            .hero-leaf-right {
+                right: -40px;
+                bottom: -10px;
+                width: 220px;
+                opacity: 0.15;
+            }
+
+            .invite {
+                padding: 3rem 1.2rem;
+            }
+            .invite-text {
+                font-size: 1rem;
+                line-height: 1.7;
+            }
+            .leaf-left {
+                left: -40px;
+                top: -30px;
+                width: 180px;
+                opacity: 0.15;
+            }
+            .leaf-right {
+                right: -40px;
+                bottom: -30px;
+                width: 180px;
+                opacity: 0.15;
+            }
+
+            .timer-section {
+                padding: 2.5rem 1.2rem;
+            }
+            .timer {
+                gap: 0.7rem;
+            }
+            .time-box {
+                min-width: 80px;
+                padding: 1rem 0.6rem;
+                border-radius: 22px;
+            }
+            .time-box span {
+                font-size: 2.2rem;
+            }
+            .time-label {
+                font-size: 0.7rem;
+            }
+
+            .place {
+                padding: 2.5rem 1.2rem;
+            }
+            .map-btn {
+                width: 120px;
+                height: 120px;
+                font-size: 1.1rem;
+                margin-top: 1.5rem;
+            }
+
+            .schedule-section {
+                padding: 2.5rem 1.2rem;
+            }
+            .schedule-item {
+                font-size: 0.95rem;
+                padding: 1rem 0;
+                flex-wrap: wrap;
+                gap: 0.3rem;
+            }
+            .schedule-item span:first-child {
+                font-weight: 600;
+                color: #5a6053;
+            }
+
+            .dresscode {
+                padding: 2.5rem 1.2rem;
+            }
+            .colors {
+                gap: 0.8rem;
+            }
+            .color {
+                width: 50px;
+                height: 50px;
+            }
+
+            .rsvp {
+                padding: 2.5rem 1.2rem;
+            }
+            .form input,
+            .form textarea,
+            .form select {
+                font-size: 0.95rem;
+                padding: 0.9rem 1.2rem;
+                border-radius: 14px;
+            }
+            .form button {
+                min-width: 160px;
+                font-size: 1rem;
+                padding: 0.9rem 1.8rem;
+            }
+
+            .section-title {
+                font-size: 1.9rem;
+                margin-bottom: 1.5rem;
+            }
+
+            footer {
+                font-size: 1rem;
+                padding: 2rem 1.2rem;
+            }
+        }
+
+        /* для очень маленьких экранов */
+        @media (max-width: 360px) {
+            .hero h1 {
+                font-size: 2.4rem;
+            }
+            .time-box {
+                min-width: 70px;
+                padding: 0.8rem 0.4rem;
+            }
+            .time-box span {
+                font-size: 1.8rem;
+            }
+            .map-btn {
+                width: 100px;
+                height: 100px;
+                font-size: 0.95rem;
+            }
+            .form button {
+                min-width: 140px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* планшеты */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .hero-leaf-left {
+                left: -80px;
+                top: -40px;
+                width: 350px;
+            }
+            .hero-leaf-right {
+                right: -80px;
+                bottom: -40px;
+                width: 350px;
+            }
+            .map-btn {
+                width: 140px;
+                height: 140px;
+                font-size: 1.3rem;
+            }
+            .time-box {
+                min-width: 110px;
+                padding: 1.4rem 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HERO ===== -->
+    <section class="section hero">
+        <img class="hero-leaf hero-leaf-left anim-item fade-right" src="https://static.tildacdn.com/tild3864-6565-4166-b633-653965656239/b38af0cef3a5bbda0096.png" alt="" />
+        <img class="hero-leaf hero-leaf-right anim-item fade-left" src="https://static.tildacdn.com/tild3864-6565-4166-b633-653965656239/b38af0cef3a5bbda0096.png" alt="" />
+        <div class="hero-decor">
+            <img class="hero-img2 anim-item zoom-in" src="https://static.tildacdn.com/tild3765-6131-4137-b134-393432653263/6b7ba7201646aa89f69a.png" alt="" />
+        </div>
+        <div class="hero-content">
+            <h1 class="anim-item fade-down">Тимур & Айсылу</h1>
+            <p class="subtitle anim-item fade-up">ПРИГЛАШЕНИЕ НА НИКАХ</p>
+            <p class="date anim-item fade-up">15 августа 2026 • 15:00</p>
+        </div>
+    </section>
+
+    <!-- ===== ПРИГЛАШЕНИЕ ===== -->
+    <section class="section invite">
+        <img class="leaf-bg leaf-left anim-item fade-right" src="https://static.tildacdn.com/tild3864-6565-4166-b633-653965656239/b38af0cef3a5bbda0096.png" alt="" />
+        <img class="leaf-bg leaf-right anim-item fade-left" src="https://static.tildacdn.com/tild3864-6565-4166-b633-653965656239/b38af0cef3a5bbda0096.png" alt="" />
+        <h2 class="section-title anim-item zoom-in">Дорогие гости!</h2>
+        <div class="invite-text anim-item zoom-in">
+            Мы будем счастливы разделить с вами один из самых важных и трогательных дней нашей жизни. Приглашаем вас стать частью нашего праздника и разделить радость этого особенного события.
+        </div>
+    </section>
+
+    <!-- ===== ТАЙМЕР ===== -->
+    <section class="section timer-section">
+        <h2 class="section-title anim-item zoom-in">До начала праздника осталось</h2>
+        <div class="timer">
+            <div class="time-box anim-item fade-up"><span id="days">00</span><div class="time-label">Дней</div></div>
+            <div class="time-box anim-item fade-up"><span id="hours">00</span><div class="time-label">Часов</div></div>
+            <div class="time-box anim-item fade-up"><span id="minutes">00</span><div class="time-label">Минут</div></div>
+            <div class="time-box anim-item fade-up"><span id="seconds">00</span><div class="time-label">Секунд</div></div>
+        </div>
+    </section>
+
+    <!-- ===== МЕСТО ===== -->
+    <section class="section place">
+        <h2 class="section-title anim-item zoom-in">Место проведения</h2>
+        <div class="invite-text anim-item zoom-in">
+            Ресторан «Кама»<br /><br />
+            Республика Татарстан, Нижнекамск,<br />
+            проспект Строителей, 18
+        </div>
+        <a class="map-btn anim-item fade-up" href="https://yandex.ru/maps/-/CPx2iC6R" target="_blank">КАРТА</a>
+    </section>
+
+    <!-- ===== РАСПИСАНИЕ ===== -->
+    <section class="section schedule-section">
+        <h2 class="section-title anim-item zoom-in">Тайминг дня</h2>
+        <div class="schedule">
+            <div class="schedule-item anim-item fade-right"><span>15:00</span><span>Сбор гостей</span></div>
+            <div class="schedule-item anim-item fade-left"><span>16:00</span><span>Церемония никаха</span></div>
+            <div class="schedule-item anim-item fade-right"><span>17:00</span><span>Праздничный банкет</span></div>
+            <div class="schedule-item anim-item fade-left"><span>18:00</span><span>Поздравления и общение</span></div>
+            <div class="schedule-item anim-item fade-right"><span>19:00</span><span>Завершение вечера</span></div>
+        </div>
+    </section>
+
+    <!-- ===== ДРЕСС-КОД ===== -->
+    <section class="section dresscode">
+        <h2 class="section-title anim-item zoom-in">Дресс-код</h2>
+        <div class="invite-text anim-item zoom-in">
+            Будем благодарны, если вы поддержите цветовую гамму нашего праздника.
+        </div>
+        <div class="colors anim-item fade-up">
+            <div class="color" style="background:#4b5151;"></div>
+            <div class="color" style="background:#ae7675;"></div>
+            <div class="color" style="background:#cda4a0;"></div>
+            <div class="color" style="background:#e4bbb9;"></div>
+            <div class="color" style="background:#c1a78e;"></div>
+        </div>
+    </section>
+
+    <!-- ===== ФОРМА ===== -->
+    <section class="section rsvp">
+        <h2 class="section-title anim-item zoom-in">Подтвердите присутствие</h2>
+        <form class="form anim-item fade-up" id="rsvpForm">
+            <input type="text" placeholder="Ваше имя" required />
+            <select required>
+                <option value="">Сможете присутствовать?</option>
+                <option>Да, обязательно</option>
+                <option>К сожалению, нет</option>
+            </select>
+            <textarea rows="4" placeholder="Ваш комментарий"></textarea>
+            <button type="submit">Отправить</button>
+            <div id="formMsg"></div>
+        </form>
+    </section>
+
+    <footer>
+        С любовью,<br />
+        Тимур и Айсылу ❤️
+    </footer>
+
+    <script>
+        // ===== АНИМАЦИЯ ПРИ СКРОЛЛЕ =====
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.15 });
+        document.querySelectorAll('.anim-item').forEach(el => observer.observe(el));
+
+        // ===== ТАЙМЕР =====
+        const weddingDate = new Date('August 15, 2026 15:00:00').getTime();
+
+        function updateTimer() {
+            const now = Date.now();
+            const distance = weddingDate - now;
+            if (distance < 0) {
+                document.querySelector('.timer').innerHTML =
+                    '<div style="font-size:2rem; color:#5a6053;">Праздник уже начался!</div>';
+                return;
+            }
+            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById('days').textContent = d < 10 ? '0' + d : d;
+            document.getElementById('hours').textContent = h < 10 ? '0' + h : h;
+            document.getElementById('minutes').textContent = m < 10 ? '0' + m : m;
+            document.getElementById('seconds').textContent = s < 10 ? '0' + s : s;
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        // ===== ОТПРАВКА ФОРМЫ =====
+        document.getElementById('rsvpForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formMsg = document.getElementById('formMsg');
+            formMsg.textContent = 'Спасибо! Ваш ответ получен.';
+            this.reset();
+            setTimeout(() => { formMsg.textContent = ''; }, 3500);
+        });
+    </script>
+
+</body>
+</html>
