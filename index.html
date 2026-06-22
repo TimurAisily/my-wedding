@@ -52,10 +52,6 @@
         .schedule-item { display:flex; justify-content:space-between; align-items:center; padding:1.3rem 0; border-bottom:1px solid rgba(90,96,83,.12); font-size:1.1rem; color:#5a6053 }
         .schedule-item:last-child { border-bottom:none }
         .schedule-item span:first-child { font-weight:600; color:#7a8272 }
-        .dresscode { background:#fcf8f4; text-align:center; padding:3.5rem 1.5rem }
-        .colors { display:flex; justify-content:center; gap:1.2rem; margin-top:2rem; flex-wrap:wrap }
-        .color { width:60px; height:60px; border-radius:50%; border:3px solid #fff; box-shadow:0 6px 24px rgba(90,96,83,.1); transition:transform .3s,box-shadow .3s }
-        .color:hover { transform:scale(1.12); box-shadow:0 8px 32px rgba(90,96,83,.18) }
         .rsvp { background:#fcf8f4; text-align:center; padding:3.5rem 1.5rem }
         .form { max-width:500px; margin:0 auto; display:flex; flex-direction:column; gap:1.5rem; width:100% }
         .form input,.form textarea,.form select { width:100%; padding:1rem 1.4rem; background:rgba(255,255,255,.7); backdrop-filter:blur(4px); border:1.5px solid rgba(90,96,83,.15); color:#3a4035; font-family:'Prata',serif; font-size:1.05rem; border-radius:16px; outline:none; transition:border-color .3s,box-shadow .3s }
@@ -70,6 +66,8 @@
         footer { padding:3rem 1.5rem; text-align:center; background:#f4efe8; color:#7a8272; font-size:1.15rem; letter-spacing:1px }
         .section-title { font-size:clamp(2rem,7vw,3.2rem); color:#5a6053; margin-bottom:2rem; text-align:center; font-weight:300; letter-spacing:1px }
         #thanks-message { display:none; text-align:center; padding:2rem; color:#5a6053; font-size:1.3rem; }
+        .loading-spinner { display:none; width:24px; height:24px; border:3px solid rgba(255,255,255,.3); border-top-color:#fff; border-radius:50%; animation:spin .6s linear infinite; margin:0 auto; }
+        @keyframes spin { to { transform:rotate(360deg) } }
         @media (max-width:480px) {
             .section { padding:2.5rem 1.2rem }
             .hero { padding:2rem 1.2rem; min-height:92vh }
@@ -94,9 +92,6 @@
             .schedule-section { padding:2.5rem 1.2rem }
             .schedule-item { font-size:.95rem; padding:1rem 0; flex-wrap:wrap; gap:.3rem }
             .schedule-item span:first-child { font-weight:600; color:#5a6053 }
-            .dresscode { padding:2.5rem 1.2rem }
-            .colors { gap:.8rem }
-            .color { width:50px; height:50px }
             .rsvp { padding:2.5rem 1.2rem }
             .form input,.form textarea,.form select { font-size:.95rem; padding:.9rem 1.2rem; border-radius:14px }
             .form button { min-width:160px; font-size:1rem; padding:.9rem 1.8rem }
@@ -177,24 +172,23 @@
         </div>
     </section>
 
-    <!-- ===== ФОРМА (классическая отправка в Google Sheets) ===== -->
+    <!-- ===== ФОРМА ===== -->
     <section class="section rsvp">
         <h2 class="section-title anim-item zoom-in">Подтвердите присутствие</h2>
-        <form class="form anim-item fade-up" id="rsvpForm"
-              action="https://script.google.com/macros/s/AKfycbzUh29ev5T0FUONClepo5e2kLYYl8hGqA4Vj0zKtU4O2UHRMzICHNvlLmliVTLEIhE/exec"
-              method="POST"
-              target="hidden_iframe">
-            <input type="text" name="name" placeholder="Ваше имя" required />
-            <select name="attendance" required>
+        <form class="form anim-item fade-up" id="rsvpForm">
+            <input type="text" id="guestName" name="name" placeholder="Ваше имя" required />
+            <select id="attendance" name="attendance" required>
                 <option value="">Сможете присутствовать?</option>
                 <option value="Да, обязательно">Да, обязательно</option>
                 <option value="К сожалению, нет">К сожалению, нет</option>
             </select>
-            <textarea name="comment" rows="4" placeholder="Ваш комментарий"></textarea>
-            <button type="submit" id="submitBtn">Отправить</button>
+            <textarea id="comment" name="comment" rows="4" placeholder="Ваш комментарий или пожелания"></textarea>
+            <button type="submit" id="submitBtn">
+                <span id="btnText">Отправить</span>
+                <div class="loading-spinner" id="spinner"></div>
+            </button>
         </form>
         <div id="thanks-message">✅ Спасибо! Ваш ответ получен.</div>
-        <iframe name="hidden_iframe" style="display:none;"></iframe>
     </section>
 
     <footer>
@@ -203,7 +197,19 @@
     </footer>
 
     <script>
-        // Анимация
+        // ============================================================
+        // ⚙️ НАСТРОЙКИ TELEGRAM
+        // ============================================================
+        const TELEGRAM_CONFIG = {
+            BOT_TOKEN: '8797369136:AAFYbwBUylgIpxq7rQeYqJnXG3Q0zLnpQRA',
+            CHAT_ID: '8797369136'
+        };
+        // ============================================================
+
+        // Google Sheets URL
+        const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzUh29ev5T0FUONClepo5e2kLYYl8hGqA4Vj0zKtU4O2UHRMzICHNvlLmliVTLEIhE/exec';
+
+        // ========== АНИМАЦИЯ ==========
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -213,7 +219,7 @@
         }, { threshold: 0.15 });
         document.querySelectorAll('.anim-item').forEach(el => observer.observe(el));
 
-        // Таймер
+        // ========== ТАЙМЕР ==========
         const weddingDate = new Date('August 15, 2026 15:00:00').getTime();
         function updateTimer() {
             const now = Date.now();
@@ -235,9 +241,91 @@
         setInterval(updateTimer, 1000);
         updateTimer();
 
-        // Показываем благодарность после отправки формы (через iframe)
-        const iframe = document.querySelector('iframe[name="hidden_iframe"]');
-        iframe.addEventListener('load', function() {
+        // ========== ОТПРАВКА В TELEGRAM ==========
+        async function sendToTelegram(name, attendance, comment) {
+            const emoji = attendance.includes('Да') ? '✅' : '❌';
+            const message = 
+                `📨 <b>Новое подтверждение!</b>\n\n` +
+                `👤 <b>Гость:</b> ${name}\n` +
+                `📋 <b>Статус:</b> ${emoji} ${attendance}\n` +
+                `💬 <b>Комментарий:</b> ${comment || 'Нет'}\n\n` +
+                `🕐 <i>${new Date().toLocaleString('ru-RU')}</i>`;
+
+            try {
+                const response = await fetch(
+                    `https://api.telegram.org/bot${TELEGRAM_CONFIG.BOT_TOKEN}/sendMessage`,
+                    {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            chat_id: TELEGRAM_CONFIG.CHAT_ID,
+                            text: message,
+                            parse_mode: 'HTML'
+                        })
+                    }
+                );
+                
+                const data = await response.json();
+                if (data.ok) {
+                    console.log('✅ Уведомление в Telegram отправлено');
+                    return true;
+                } else {
+                    console.error('Ошибка Telegram API:', data.description);
+                    return false;
+                }
+            } catch (error) {
+                console.error('Ошибка отправки в Telegram:', error);
+                return false;
+            }
+        }
+
+        // ========== ОТПРАВКА В GOOGLE SHEETS ==========
+        async function sendToGoogleSheets(name, attendance, comment) {
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('attendance', attendance);
+            formData.append('comment', comment);
+            
+            try {
+                await fetch(GOOGLE_SHEETS_URL, {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'no-cors'
+                });
+                console.log('✅ Данные отправлены в Google Sheets');
+                return true;
+            } catch (error) {
+                console.log('Google Sheets (ожидаемая ошибка no-cors):', error);
+                return true;
+            }
+        }
+
+        // ========== ОБРАБОТЧИК ФОРМЫ ==========
+        document.getElementById('rsvpForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('guestName').value.trim();
+            const attendance = document.getElementById('attendance').value;
+            const comment = document.getElementById('comment').value.trim();
+            
+            if (!name || !attendance) {
+                alert('Пожалуйста, заполните имя и выберите статус присутствия');
+                return;
+            }
+
+            const btnText = document.getElementById('btnText');
+            const spinner = document.getElementById('spinner');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            btnText.style.display = 'none';
+            spinner.style.display = 'block';
+            submitBtn.disabled = true;
+
+            await Promise.all([
+                sendToGoogleSheets(name, attendance, comment),
+                sendToTelegram(name, attendance, comment)
+            ]);
+
             document.getElementById('rsvpForm').style.display = 'none';
             document.getElementById('thanks-message').style.display = 'block';
         });
