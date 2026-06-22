@@ -10,7 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;600;700&family=Prata&display=swap" rel="stylesheet" />
     <style>
-        /* все стили без изменений – я сократил для экономии места, они точно такие же как у вас */
         * { margin:0; padding:0; box-sizing:border-box }
         body { font-family:'Prata',serif; background:#fffcf9; color:#5a6053; line-height:1.6; overflow-x:hidden }
         .section { position:relative; width:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; padding:3rem 1.5rem }
@@ -68,7 +67,7 @@
         .form button { padding:1rem 2.5rem; background:linear-gradient(145deg,#9ca58f,#7f8b73); color:#fff; border:none; font-family:'Prata',serif; font-weight:400; font-size:1.2rem; letter-spacing:.12em; cursor:pointer; border-radius:60px; transition:all .4s cubic-bezier(.34,1.56,.64,1); width:auto; min-width:200px; margin:0 auto; box-shadow:0 8px 28px rgba(127,139,115,.25); border:1px solid rgba(255,255,255,.2) }
         .form button:hover { background:linear-gradient(145deg,#8c957f,#6b7a64); box-shadow:0 12px 36px rgba(127,139,115,.35); transform:translateY(-3px) }
         .form button:active { transform:translateY(2px) scale(.97); box-shadow:0 4px 16px rgba(127,139,115,.2) }
-        #formMsg { margin-top:1rem; color:#7a8272; font-size:1.05rem }
+        #formMsg { margin-top:1rem; color:#7a8272; font-size:1.05rem; min-height:2rem }
         footer { padding:3rem 1.5rem; text-align:center; background:#f4efe8; color:#7a8272; font-size:1.15rem; letter-spacing:1px }
         .section-title { font-size:clamp(2rem,7vw,3.2rem); color:#5a6053; margin-bottom:2rem; text-align:center; font-weight:300; letter-spacing:1px }
         @media (max-width:480px) {
@@ -178,15 +177,10 @@
         </div>
     </section>
 
-    <!-- ===== ФОРМА (классическая отправка, без fetch) ===== -->
+    <!-- ===== ФОРМА (Google Sheets) ===== -->
     <section class="section rsvp">
         <h2 class="section-title anim-item zoom-in">Подтвердите присутствие</h2>
-        <form class="form anim-item fade-up"
-              action="https://formsubmit.co/isl99@internet.ru"
-              method="POST">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_subject" value="Новый ответ на свадьбу!">
-            <input type="hidden" name="_next" value="https://timuraisily.github.io/my-wedding/#rsvp-thanks">
+        <form class="form anim-item fade-up" id="rsvpForm">
             <input type="text" name="name" placeholder="Ваше имя" required />
             <select name="attendance" required>
                 <option value="">Сможете присутствовать?</option>
@@ -194,14 +188,10 @@
                 <option value="К сожалению, нет">К сожалению, нет</option>
             </select>
             <textarea name="comment" rows="4" placeholder="Ваш комментарий"></textarea>
-            <button type="submit">Отправить</button>
+            <button type="submit" id="submitBtn">Отправить</button>
+            <div id="formMsg"></div>
         </form>
     </section>
-
-    <!-- Благодарность -->
-    <div id="rsvp-thanks" style="text-align:center; padding:2rem; color:#5a6053; font-size:1.3rem;">
-        ✅ Спасибо! Ваш ответ получен.
-    </div>
 
     <footer>
         С любовью,<br />
@@ -241,14 +231,45 @@
         setInterval(updateTimer, 1000);
         updateTimer();
 
-        // Показываем "спасибо", если пришли с якоря
-        if (window.location.hash === '#rsvp-thanks') {
-            const thanksBlock = document.getElementById('rsvp-thanks');
-            if (thanksBlock) {
-                thanksBlock.scrollIntoView({ behavior: 'smooth' });
-                history.replaceState(null, null, ' ');
+        // Отправка формы в Google Таблицу
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzUh29ev5T0FUONClepo5e2kLYYl8hGqA4Vj0zKtU4O2UHRMzICHNvlLmliVTLEIhE/exec';
+
+        const form = document.getElementById('rsvpForm');
+        const formMsg = document.getElementById('formMsg');
+        const submitBtn = document.getElementById('submitBtn');
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            formMsg.textContent = '';
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Отправка...';
+
+            const formData = new FormData(form);
+            const data = {
+                name: formData.get('name'),
+                attendance: formData.get('attendance'),
+                comment: formData.get('comment')
+            };
+
+            try {
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+                // no-cors не дает прочитать ответ, но запрос успешно уйдет
+                formMsg.textContent = '✅ Спасибо! Ваш ответ получен.';
+                form.reset();
+            } catch (error) {
+                formMsg.textContent = '❌ Ошибка соединения. Проверьте интернет.';
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Отправить';
             }
-        }
+        });
     </script>
 
 </body>
