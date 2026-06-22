@@ -183,8 +183,7 @@
         <form class="form anim-item fade-up" id="rsvpForm"
               action="https://script.google.com/macros/s/AKfycbzUh29ev5T0FUONClepo5e2kLYYl8hGqA4Vj0zKtU4O2UHRMzICHNvlLmliVTLEIhE/exec"
               method="POST"
-              target="hidden_iframe"
-              onsubmit="document.getElementById('submitBtn').disabled=true; document.getElementById('submitBtn').textContent='Отправка...';">
+              target="hidden_iframe">
             <input type="text" name="name" placeholder="Ваше имя" required />
             <select name="attendance" required>
                 <option value="">Сможете присутствовать?</option>
@@ -194,9 +193,7 @@
             <textarea name="comment" rows="4" placeholder="Ваш комментарий"></textarea>
             <button type="submit" id="submitBtn">Отправить</button>
         </form>
-        <div id="formMsg" style="margin-top:1rem; color:#7a8272; font-size:1.05rem;"></div>
         <div id="thanks-message">✅ Спасибо! Ваш ответ получен.</div>
-        <!-- скрытый iframe для перехвата ответа -->
         <iframe name="hidden_iframe" style="display:none;"></iframe>
     </section>
 
@@ -238,11 +235,10 @@
         setInterval(updateTimer, 1000);
         updateTimer();
 
-        // Показываем "Спасибо" после отправки (через небольшой таймаут)
+        // Показываем благодарность после отправки формы (через iframe)
         const iframe = document.querySelector('iframe[name="hidden_iframe"]');
         iframe.addEventListener('load', function() {
             document.getElementById('rsvpForm').style.display = 'none';
-            document.getElementById('formMsg').style.display = 'none';
             document.getElementById('thanks-message').style.display = 'block';
         });
     </script>
