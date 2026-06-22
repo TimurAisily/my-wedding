@@ -4,69 +4,133 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <title>Тимур & Айсылу | Приглашение</title>
+    <meta name="description" content="Пригласительное на никах" />
+    <meta name="theme-color" content="#f7f3ef" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Prata&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;600;700&family=Prata&display=swap" rel="stylesheet" />
     <style>
         * { margin:0; padding:0; box-sizing:border-box }
         body { font-family:'Prata',serif; background:#fffcf9; color:#5a6053; line-height:1.6; overflow-x:hidden }
         .section { position:relative; width:100%; display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; padding:3rem 1.5rem }
-        .anim-item { opacity:0; transition:opacity .9s ease,transform .9s ease }
-        .anim-item.visible { opacity:1; transform:translate(0,0) scale(1) }
+        .anim-item { opacity:0; transition:opacity .9s cubic-bezier(.25,.46,.45,.94),transform .9s cubic-bezier(.25,.46,.45,.94) }
+        .anim-item.visible { opacity:1; transform:translate(0,0) scale(1) rotate(0deg) }
         .fade-up { transform:translateY(40px) }
         .fade-down { transform:translateY(-40px) }
+        .fade-left { transform:translateX(-40px) }
+        .fade-right { transform:translateX(40px) }
         .zoom-in { transform:scale(.92) }
-        h1,h2 { font-family:'Prata',serif; font-weight:400 }
-        .hero { min-height:100vh; background:linear-gradient(165deg,#fcf8f4 0%,#f4efe8 100%); text-align:center; justify-content:center }
+        h1,h2,h3 { font-family:'Prata',serif; font-weight:400 }
+        .hero { min-height:100vh; background:linear-gradient(165deg,#fcf8f4 0%,#f4efe8 100%); text-align:center; position:relative; padding:3rem 1.5rem; justify-content:center }
+        .hero-decor { position:absolute; width:100%; height:100%; top:0; left:0; pointer-events:none; opacity:.12 }
+        .hero-decor img { position:absolute; max-width:70%; height:auto }
+        .hero-img2 { top:10%; left:10%; width:80% }
+        .hero-leaf { position:absolute; pointer-events:none; opacity:.20; z-index:1 }
+        .hero-leaf-left { left:-60px; top:-20px; width:280px; transform:rotate(130deg) }
+        .hero-leaf-right { right:-60px; bottom:-20px; width:280px; transform:rotate(300deg) }
+        .hero-content { position:relative; z-index:2 }
         .hero h1 { font-size:clamp(2.8rem,14vw,5rem); color:#5a6053; margin-bottom:.5rem; letter-spacing:2px }
         .hero .subtitle { font-size:clamp(1rem,4.5vw,1.5rem); letter-spacing:5px; margin-top:.5rem; color:#7a8272; font-weight:300 }
-        .hero .date { font-size:clamp(1.4rem,5.5vw,2rem); margin-top:1.5rem; color:#7a8272; background:rgba(255,255,255,.5); display:inline-block; padding:.4rem 2rem; border-radius:60px; box-shadow:0 4px 20px rgba(0,0,0,.04) }
-        .section-title { font-size:clamp(2rem,7vw,3.2rem); color:#5a6053; margin-bottom:2rem; text-align:center; font-weight:300 }
-        .invite-text { max-width:700px; margin:0 auto; font-size:clamp(1.1rem,4.2vw,1.4rem); text-align:center; line-height:1.8 }
-        .timer-section { background:#f4efe8 }
+        .hero .date { font-size:clamp(1.4rem,5.5vw,2rem); margin-top:1.5rem; color:#7a8272; background:rgba(255,255,255,.5); backdrop-filter:blur(4px); display:inline-block; padding:.4rem 2rem; border-radius:60px; box-shadow:0 4px 20px rgba(0,0,0,.04) }
+        .invite { background:#fcf8f4; text-align:center; position:relative; padding:4rem 1.5rem }
+        .invite-text { max-width:700px; margin:0 auto; font-size:clamp(1.1rem,4.2vw,1.4rem); position:relative; z-index:2; color:#5a6053; line-height:1.8 }
+        .leaf-bg { position:absolute; opacity:.20; pointer-events:none }
+        .leaf-left { left:-70px; top:-50px; width:260px; transform:rotate(146deg) }
+        .leaf-right { right:-70px; bottom:-50px; width:260px; transform:rotate(297deg) }
+        .timer-section { background:#f4efe8; text-align:center; padding:3.5rem 1.5rem }
         .timer { display:flex; justify-content:center; gap:1rem; flex-wrap:wrap; margin-top:2rem }
-        .time-box { background:rgba(255,255,255,.7); padding:1.4rem 1rem; border-radius:28px; min-width:100px; box-shadow:0 8px 32px rgba(90,96,83,.08); text-align:center }
-        .time-box span { display:block; font-size:2.8rem; font-weight:600; color:#5a6053 }
-        .time-label { font-size:.85rem; margin-top:.3rem; color:#8a9282; text-transform:uppercase }
-        .map-btn { display:inline-flex; align-items:center; justify-content:center; margin-top:2rem; width:150px; height:150px; border-radius:50%; background:linear-gradient(145deg,#9ca58f,#7f8b73); color:#fff; text-decoration:none; font-size:1.4rem; transition:transform .3s; box-shadow:0 8px 30px rgba(127,139,115,.3) }
-        .map-btn:hover { transform:scale(1.06) }
-        .schedule-section { background:#f4efe8 }
+        .time-box { background:rgba(255,255,255,.7); backdrop-filter:blur(6px); padding:1.4rem 1rem; border-radius:28px; min-width:100px; box-shadow:0 8px 32px rgba(90,96,83,.08); transition:transform .3s,box-shadow .3s; border:1px solid rgba(255,255,255,.4) }
+        .time-box:hover { transform:translateY(-4px); box-shadow:0 12px 40px rgba(90,96,83,.12) }
+        .time-box span { display:block; font-size:2.8rem; font-weight:600; color:#5a6053; letter-spacing:2px }
+        .time-label { font-size:.85rem; margin-top:.3rem; color:#8a9282; text-transform:uppercase; letter-spacing:1px }
+        .place { background:#fcf8f4; text-align:center; padding:3.5rem 1.5rem }
+        .map-btn { display:inline-flex; align-items:center; justify-content:center; margin-top:2rem; width:150px; height:150px; border-radius:50%; background:linear-gradient(145deg,#9ca58f,#7f8b73); color:#fff; text-decoration:none; font-size:1.4rem; font-family:'Prata',serif; transition:transform .4s cubic-bezier(.34,1.56,.64,1),box-shadow .4s; box-shadow:0 8px 30px rgba(127,139,115,.3); border:2px solid rgba(255,255,255,.3) }
+        .map-btn:hover { transform:scale(1.06); box-shadow:0 12px 40px rgba(127,139,115,.4) }
+        .map-btn:active { transform:scale(.95) }
+        .schedule-section { background:#f4efe8; padding:3.5rem 1.5rem }
         .schedule { max-width:600px; margin:0 auto; width:100% }
-        .schedule-item { display:flex; justify-content:space-between; align-items:center; padding:1.3rem 0; border-bottom:1px solid rgba(90,96,83,.12); font-size:1.1rem }
+        .schedule-item { display:flex; justify-content:space-between; align-items:center; padding:1.3rem 0; border-bottom:1px solid rgba(90,96,83,.12); font-size:1.1rem; color:#5a6053 }
         .schedule-item:last-child { border-bottom:none }
         .schedule-item span:first-child { font-weight:600; color:#7a8272 }
-        .rsvp-btn { display:inline-block; padding:1.2rem 3rem; background:linear-gradient(145deg,#9ca58f,#7f8b73); color:#fff; text-decoration:none; font-size:1.2rem; border-radius:60px; letter-spacing:1px; transition:all .3s; box-shadow:0 8px 28px rgba(127,139,115,.25); margin-top:2rem }
-        .rsvp-btn:hover { transform:translateY(-3px); box-shadow:0 12px 36px rgba(127,139,115,.35) }
-        footer { padding:3rem 1.5rem; text-align:center; background:#f4efe8; color:#7a8272; font-size:1.15rem }
+        .rsvp { background:#fcf8f4; text-align:center; padding:3.5rem 1.5rem }
+        .rsvp-btn { display:inline-block; padding:1.2rem 3rem; background:linear-gradient(145deg,#9ca58f,#7f8b73); color:#fff; text-decoration:none; font-family:'Prata',serif; font-size:1.2rem; border-radius:60px; letter-spacing:.12em; transition:all .4s cubic-bezier(.34,1.56,.64,1); box-shadow:0 8px 28px rgba(127,139,115,.25); border:1px solid rgba(255,255,255,.2); margin-top:2rem }
+        .rsvp-btn:hover { background:linear-gradient(145deg,#8c957f,#6b7a64); box-shadow:0 12px 36px rgba(127,139,115,.35); transform:translateY(-3px) }
+        .rsvp-btn:active { transform:translateY(2px) scale(.97); box-shadow:0 4px 16px rgba(127,139,115,.2) }
+        footer { padding:3rem 1.5rem; text-align:center; background:#f4efe8; color:#7a8272; font-size:1.15rem; letter-spacing:1px }
+        .section-title { font-size:clamp(2rem,7vw,3.2rem); color:#5a6053; margin-bottom:2rem; text-align:center; font-weight:300; letter-spacing:1px }
         @media (max-width:480px) {
             .section { padding:2.5rem 1.2rem }
             .hero { padding:2rem 1.2rem; min-height:92vh }
             .hero h1 { font-size:clamp(2.6rem,16vw,4rem) }
-            .time-box { min-width:80px; padding:1rem .6rem }
+            .hero .subtitle { letter-spacing:3px; font-size:.95rem }
+            .hero .date { font-size:1.2rem; padding:.3rem 1.5rem; backdrop-filter:blur(6px) }
+            .hero-decor img { max-width:90%; opacity:.15 }
+            .hero-img2 { top:5%; left:5%; width:90% }
+            .hero-leaf-left { left:-40px; top:-10px; width:220px; opacity:.15 }
+            .hero-leaf-right { right:-40px; bottom:-10px; width:220px; opacity:.15 }
+            .invite { padding:3rem 1.2rem }
+            .invite-text { font-size:1rem; line-height:1.7 }
+            .leaf-left { left:-40px; top:-30px; width:180px; opacity:.15 }
+            .leaf-right { right:-40px; bottom:-30px; width:180px; opacity:.15 }
+            .timer-section { padding:2.5rem 1.2rem }
+            .timer { gap:.7rem }
+            .time-box { min-width:80px; padding:1rem .6rem; border-radius:22px }
             .time-box span { font-size:2.2rem }
-            .map-btn { width:120px; height:120px; font-size:1.1rem }
-            .schedule-item { font-size:.95rem; padding:1rem 0; flex-wrap:wrap }
+            .time-label { font-size:.7rem }
+            .place { padding:2.5rem 1.2rem }
+            .map-btn { width:120px; height:120px; font-size:1.1rem; margin-top:1.5rem }
+            .schedule-section { padding:2.5rem 1.2rem }
+            .schedule-item { font-size:.95rem; padding:1rem 0; flex-wrap:wrap; gap:.3rem }
+            .schedule-item span:first-child { font-weight:600; color:#5a6053 }
+            .rsvp { padding:2.5rem 1.2rem }
             .rsvp-btn { padding:1rem 2rem; font-size:1rem }
+            .section-title { font-size:1.9rem; margin-bottom:1.5rem }
+            footer { font-size:1rem; padding:2rem 1.2rem }
+        }
+        @media (max-width:360px) {
+            .hero h1 { font-size:2.4rem }
+            .time-box { min-width:70px; padding:.8rem .4rem }
+            .time-box span { font-size:1.8rem }
+            .map-btn { width:100px; height:100px; font-size:.95rem }
+            .rsvp-btn { padding:.9rem 1.5rem; font-size:.9rem }
+        }
+        @media (min-width:481px) and (max-width:768px) {
+            .hero-leaf-left { left:-80px; top:-40px; width:350px }
+            .hero-leaf-right { right:-80px; bottom:-40px; width:350px }
+            .map-btn { width:140px; height:140px; font-size:1.3rem }
+            .time-box { min-width:110px; padding:1.4rem 1.2rem }
         }
     </style>
 </head>
 <body>
 
+    <!-- ===== HERO ===== -->
     <section class="section hero">
-        <h1 class="anim-item fade-down">Тимур & Айсылу</h1>
-        <p class="subtitle anim-item fade-up">ПРИГЛАШЕНИЕ НА НИКАХ</p>
-        <p class="date anim-item fade-up">15 августа 2026 • 15:00</p>
-    </section>
-
-    <section class="section">
-        <h2 class="section-title anim-item zoom-in">Дорогие гости!</h2>
-        <div class="invite-text anim-item zoom-in">
-            Мы будем счастливы разделить с вами один из самых важных и трогательных дней нашей жизни. Приглашаем вас стать частью нашего праздника.
+        <img class="hero-leaf hero-leaf-left anim-item fade-right" src="https://static.tildacdn.com/tild3864-6565-4166-b633-653965656239/b38af0cef3a5bbda0096.png" alt="" />
+        <img class="hero-leaf hero-leaf-right anim-item fade-left" src="https://static.tildacdn.com/tild3864-6565-4166-b633-653965656239/b38af0cef3a5bbda0096.png" alt="" />
+        <div class="hero-decor">
+            <img class="hero-img2 anim-item zoom-in" src="https://static.tildacdn.com/tild3765-6131-4137-b134-393432653263/6b7ba7201646aa89f69a.png" alt="" />
+        </div>
+        <div class="hero-content">
+            <h1 class="anim-item fade-down">Тимур & Айсылу</h1>
+            <p class="subtitle anim-item fade-up">ПРИГЛАШЕНИЕ НА НИКАХ</p>
+            <p class="date anim-item fade-up">15 августа 2026 • 15:00</p>
         </div>
     </section>
 
+    <!-- ===== ПРИГЛАШЕНИЕ ===== -->
+    <section class="section invite">
+        <img class="leaf-bg leaf-left anim-item fade-right" src="https://static.tildacdn.com/tild3864-6565-4166-b633-653965656239/b38af0cef3a5bbda0096.png" alt="" />
+        <img class="leaf-bg leaf-right anim-item fade-left" src="https://static.tildacdn.com/tild3864-6565-4166-b633-653965656239/b38af0cef3a5bbda0096.png" alt="" />
+        <h2 class="section-title anim-item zoom-in">Дорогие гости!</h2>
+        <div class="invite-text anim-item zoom-in">
+            Мы будем счастливы разделить с вами один из самых важных и трогательных дней нашей жизни. Приглашаем вас стать частью нашего праздника и разделить радость этого особенного события.
+        </div>
+    </section>
+
+    <!-- ===== ТАЙМЕР ===== -->
     <section class="section timer-section">
-        <h2 class="section-title anim-item zoom-in">До начала праздника</h2>
+        <h2 class="section-title anim-item zoom-in">До начала праздника осталось</h2>
         <div class="timer">
             <div class="time-box anim-item fade-up"><span id="days">00</span><div class="time-label">Дней</div></div>
             <div class="time-box anim-item fade-up"><span id="hours">00</span><div class="time-label">Часов</div></div>
@@ -75,7 +139,8 @@
         </div>
     </section>
 
-    <section class="section">
+    <!-- ===== МЕСТО ===== -->
+    <section class="section place">
         <h2 class="section-title anim-item zoom-in">Место проведения</h2>
         <div class="invite-text anim-item zoom-in">
             Ресторан «Кама»<br /><br />
@@ -85,17 +150,19 @@
         <a class="map-btn anim-item fade-up" href="https://yandex.ru/maps/-/CPx2iC6R" target="_blank">КАРТА</a>
     </section>
 
+    <!-- ===== РАСПИСАНИЕ ===== -->
     <section class="section schedule-section">
         <h2 class="section-title anim-item zoom-in">Тайминг дня</h2>
         <div class="schedule">
-            <div class="schedule-item anim-item fade-up"><span>14:30</span><span>Сбор гостей</span></div>
-            <div class="schedule-item anim-item fade-up"><span>15:00</span><span>Церемония никаха</span></div>
-            <div class="schedule-item anim-item fade-up"><span>16:00</span><span>Праздничный банкет</span></div>
-            <div class="schedule-item anim-item fade-up"><span>20:00</span><span>Завершение вечера</span></div>
+            <div class="schedule-item anim-item fade-right"><span>14:30</span><span>Сбор гостей</span></div>
+            <div class="schedule-item anim-item fade-left"><span>15:00</span><span>Церемония никаха</span></div>
+            <div class="schedule-item anim-item fade-right"><span>16:00</span><span>Праздничный банкет</span></div>
+            <div class="schedule-item anim-item fade-right"><span>20:00</span><span>Завершение вечера</span></div>
         </div>
     </section>
 
-    <section class="section">
+    <!-- ===== ФОРМА ===== -->
+    <section class="section rsvp">
         <h2 class="section-title anim-item zoom-in">Подтвердите присутствие</h2>
         <a class="rsvp-btn anim-item fade-up" href="https://forms.yandex.ru/u/6a3973f390fa7b258987851a" target="_blank">📋 Заполнить анкету</a>
     </section>
@@ -106,21 +173,34 @@
     </footer>
 
     <script>
+        // Анимация
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) entry.target.classList.add('visible');
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
             });
         }, { threshold: 0.15 });
         document.querySelectorAll('.anim-item').forEach(el => observer.observe(el));
 
+        // Таймер
         const weddingDate = new Date('August 15, 2026 15:00:00').getTime();
         function updateTimer() {
-            const distance = weddingDate - Date.now();
-            if (distance < 0) return;
-            document.getElementById('days').textContent = String(Math.floor(distance / (1000*60*60*24))).padStart(2,'0');
-            document.getElementById('hours').textContent = String(Math.floor((distance % (1000*60*60*24))/(1000*60*60))).padStart(2,'0');
-            document.getElementById('minutes').textContent = String(Math.floor((distance % (1000*60*60))/(1000*60))).padStart(2,'0');
-            document.getElementById('seconds').textContent = String(Math.floor((distance % (1000*60))/1000)).padStart(2,'0');
+            const now = Date.now();
+            const distance = weddingDate - now;
+            if (distance < 0) {
+                document.querySelector('.timer').innerHTML =
+                    '<div style="font-size:2rem; color:#5a6053;">Праздник уже начался!</div>';
+                return;
+            }
+            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((distance % (1000 * 60)) / 1000);
+            document.getElementById('days').textContent = d < 10 ? '0' + d : d;
+            document.getElementById('hours').textContent = h < 10 ? '0' + h : h;
+            document.getElementById('minutes').textContent = m < 10 ? '0' + m : m;
+            document.getElementById('seconds').textContent = s < 10 ? '0' + s : s;
         }
         setInterval(updateTimer, 1000);
         updateTimer();
